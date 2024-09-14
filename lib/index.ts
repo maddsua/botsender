@@ -12,9 +12,12 @@ export interface SenderProps extends SenderCredentials {
 	content: string;
 };
 
-export interface SenderResult {
-	ok: boolean;
-	errors: SenderError[] | null;
+export type SenderResult = {
+	ok: true;
+	errors: null;
+} | {
+	ok: false;
+	errors: SenderError[];
 };
 
 export interface SenderError {
