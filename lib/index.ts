@@ -21,7 +21,7 @@ export type SenderResult = {
 };
 
 export interface SenderError {
-	chat: ChatID;
+	chat?: ChatID;
 	error: Error;
 };
 
@@ -34,6 +34,11 @@ type ApiResponse = {
 };
 
 export const sendMessage = async (props: SenderProps): Promise<SenderResult> => {
+
+	const propsError = validateProps(props);
+	if (propsError) {
+		return { ok: false, errors: [{ error: propsError, }] };
+	}
 
 	const endpoint = `https://api.telegram.org/bot${props.token}/sendMessage`;
 
@@ -51,6 +56,30 @@ export const sendMessage = async (props: SenderProps): Promise<SenderResult> => 
 
 	return { ok: false, errors: errorResults };
 };
+
+const validateProps = (props: SenderProps): Error | null => {
+
+	if (!props.token.length) {
+		return Error('Empty bot token', {
+			cause: 'sendMessage() was called with an empty "token" parameter'
+		});
+	}
+
+	if (!props.chats.length) {
+		return new Error('Empty chat list', {
+			cause: 'sendMessage() was called with an empty "chats" parameter'
+		});
+	}
+
+	if (!props.content.length) {
+		return new Error('Empty content', {
+			cause: 'sendMessage() was called with an empty "content" parameter'
+		});
+	}
+
+	return null;
+};
+
 
 interface PostProps {
 	endpoint: string;

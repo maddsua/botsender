@@ -1,6 +1,6 @@
 {
 	"name": "@maddsua/botsender",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"type": "module",
 	"description": "Simple TS module to send notifications using Telegram bots ",
 	"main": "./dist/index.js",
